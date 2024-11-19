@@ -16,7 +16,13 @@ impl Task {
     }
 }
 
-pub fn add_task(task: &mut Vec<Task>) {}
+pub fn add_task(task: &mut Vec<Task>) {
+    let mut description = String::new();
+    println!("Enter the task description:");
+    io::stdin().read_line(&mut description)
+        .expect("Failed to read input");
+    task.push(Task::new(description));
+}
 
 pub fn view_tasks(tasks: &Vec<Task>) {}
 
