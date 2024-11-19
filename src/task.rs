@@ -1,4 +1,5 @@
 use rand::Rng;
+use std::io;
 
 pub struct Task {
     id: u32,
@@ -24,7 +25,17 @@ pub fn add_task(task: &mut Vec<Task>) {
     task.push(Task::new(description));
 }
 
-pub fn view_tasks(tasks: &Vec<Task>) {}
+pub fn display_tasks(tasks: &Vec<Task>) {
+    if tasks.is_empty() {
+        println!("No existing tasks!");
+    } else {
+        println!("Your tasks:");
+        for task in tasks {
+            let status = if task.completed { "✓" } else { "✗" };
+            println!("{}: [{}] {}", task.id, status, task.description);
+        }
+    }
+}
 
 pub fn delete_task(task_id: u32, tasks: &mut Vec<Task>) {}
 
