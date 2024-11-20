@@ -9,11 +9,12 @@ pub fn run_program() {
 
     loop {
         input.clear();
-        println!("Main menu:");
+        println!("\n\nMain menu:");
         println!("1. Add task");
         println!("2. Display tasks");
-        println!("3. Delete task");
-        println!("4. Exit\n");
+        println!("3. Mark a task as complete");
+        println!("4. Delete task");
+        println!("5. Exit\n");
         io::stdin().read_line(&mut input)
             .expect("Failed to read input");
         let choice = match input.trim().parse() {
@@ -26,7 +27,8 @@ pub fn run_program() {
         match choice {
             1 => task::add_task(&mut tasks),
             2 => task::display_tasks(&mut tasks),
-            3 => task::delete_task(&mut tasks),
+            3 => task::complete_task(&mut tasks),
+            4 => task::delete_task(&mut tasks),
             _ => break
         }
     }

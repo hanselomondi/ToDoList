@@ -64,4 +64,24 @@ pub fn delete_task(tasks: &mut HashMap<u32, Task>) {
     }
 }
 
-pub fn complete_task(_task_id: u32, _tasks: &mut Vec<Task>) {}
+pub fn complete_task(tasks: &mut HashMap<u32, Task>) {
+    let mut input = String::new();
+    println!("Enter ID of task to mark as complete:");
+    io::stdin().read_line(&mut input)
+        .expect("Failed to read input");
+    let task_id = match input.trim().parse() {
+        Ok(num) => num,
+        Err(_) => {
+            println!("Invalid input");
+            return;
+        }
+    };
+    if tasks.contains_key(&task_id) {
+        if let Some(task) = tasks.get_mut(&task_id) {
+            task.completed = true;
+            println!("Task marked as completed");
+        }
+    } else {
+        println!("No task with the ID {} exists", task_id);
+    }
+}
