@@ -1,6 +1,7 @@
-use rand::Rng;
+use std::collections::HashMap;
 use std::io;
 
+#[derive(Debug)]
 pub struct Task {
     id: u32,
     description: String,
@@ -8,36 +9,43 @@ pub struct Task {
 }
 
 impl Task {
-    fn new(description: String) -> Task {
+    fn new(description: String, tasks: &HashMap<u32, Task>) -> Task {
         Task {
-            id: rand::thread_rng().gen_range(1, 1001),
+            id: (tasks.len() + 1).try_into().unwrap(),
             description: description,
             completed: false
         }
     }
 }
 
-pub fn add_task(task: &mut Vec<Task>) {
+pub fn add_task(tasks: &mut HashMap<u32, Task>) {
     let mut description = String::new();
     println!("Enter the task description:");
     io::stdin().read_line(&mut description)
         .expect("Failed to read input");
-    task.push(Task::new(description));
+    tasks.insert(
+        (tasks.len() + 1).try_into().unwrap(),
+        Task::new(
+            description.trim().to_string(),
+            tasks
+        )
+    );
+    println!("Task created successfully!");
 }
 
-pub fn display_tasks(tasks: &Vec<Task>) {
+pub fn display_tasks(tasks: &HashMap<u32, Task>) {
     if tasks.is_empty() {
         println!("No existing tasks!");
     } else {
         println!("Your tasks:");
-        for task in tasks {
+        for task in tasks.values() {
             let status = if task.completed { "✓" } else { "✗" };
             println!("{}: [{}] {}", task.id, status, task.description);
         }
     }
 }
 
-pub fn delete_task(tasks: &mut Vec<Task>) {
+pub fn delete_task(tasks: &mut HashMap<u32, Task>) {
     let mut input = String::new();
     println!("Enter the ID of the task you want to delete:");
     io::stdin().read_line(&mut input)
@@ -49,15 +57,11 @@ pub fn delete_task(tasks: &mut Vec<Task>) {
             return;
         }
     };
-    match tasks.iter().position(|task| task_id == task.id) {
-        Some(index) => {
-            tasks.remove(index);
-            println!("Task successfully deleted");
-        }
-        None => {
-            println!("No task with the ID {} exists", task_id);
-        }
+    if tasks.contains_key(&task_id) {
+        println!("Task {:#?} deleted", tasks.remove(&task_id));
+    } else {
+        println!("No task with the ID {} exists", task_id);
     }
 }
 
-pub fn complete_task(task_id: u32, tasks: &mut Vec<Task>) {}
+pub fn complete_task(_task_id: u32, _tasks: &mut Vec<Task>) {}

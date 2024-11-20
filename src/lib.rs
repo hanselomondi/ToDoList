@@ -1,10 +1,11 @@
 mod task;
 
 use std::io;
+use std::collections::HashMap;
 
 pub fn run_program() {
     let mut input = String::new();
-    let mut tasks = Vec::new();
+    let mut tasks = HashMap::new();
 
     loop {
         input.clear();
