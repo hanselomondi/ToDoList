@@ -11,7 +11,8 @@ pub fn run_program() {
         println!("Main menu:");
         println!("1. Add task");
         println!("2. Display tasks");
-        println!("3. Exit");
+        println!("3. Delete task");
+        println!("4. Exit\n");
         io::stdin().read_line(&mut input)
             .expect("Failed to read input");
         let choice = match input.trim().parse() {
@@ -24,6 +25,7 @@ pub fn run_program() {
         match choice {
             1 => task::add_task(&mut tasks),
             2 => task::display_tasks(&mut tasks),
+            3 => task::delete_task(&mut tasks),
             _ => break
         }
     }
